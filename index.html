@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#07101f">
+<title>TONShop — покупка TON</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+:root{--bg:#060d19;--panel:#0d1a2d;--panel2:#122541;--line:#1c3d64;--cyan:#31c5ff;--blue:#087fd8;--text:#edf6ff;--muted:#91a7c3;--green:#22d69a;--yellow:#ffc65a;--red:#ff7184}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 75% 0%,#10345d 0,transparent 35%),var(--bg);color:var(--text);font-family:Manrope,system-ui,sans-serif;min-height:100vh}
+button,input{font:inherit}.wrap{max-width:980px;margin:auto;padding:0 20px}.top{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #1b3656}.brand{font-size:23px;font-weight:800;display:flex;align-items:center;gap:10px}.diamond{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#28caff,#0752a5);box-shadow:0 0 25px #1baeff77;font-size:24px}.cyan{color:var(--cyan)}nav{display:flex;gap:8px;flex-wrap:wrap}.nav{border:1px solid transparent;background:none;color:var(--muted);padding:9px 13px;border-radius:11px;cursor:pointer}.nav.active,.nav:hover{color:var(--cyan);background:#102746;border-color:#214b76}
+main{padding:36px 0 60px}.view.hidden{display:none}.hero{display:flex;justify-content:space-between;align-items:center;padding:12px 5px 28px}.eyebrow{font-size:11px;letter-spacing:2px;color:var(--muted);font-weight:800}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:7px;box-shadow:0 0 10px var(--green)}h1{font-size:clamp(32px,5vw,50px);line-height:1.1;margin:14px 0}.gradient{background:linear-gradient(90deg,#fff,#39c8ff);color:transparent;background-clip:text}.muted{color:var(--muted)}.hero p{line-height:1.7;max-width:540px;font-size:14px}.heroGem{font-size:95px;filter:drop-shadow(0 0 25px #13aaff99);padding:0 35px}
+.rate,.card{background:linear-gradient(140deg,#112846ed,#0b1729);border:1px solid var(--line);border-radius:21px;box-shadow:inset 0 1px #ffffff08,0 15px 40px #0003}.rate{padding:24px 29px;display:flex;align-items:center;justify-content:space-between}.rateNum{font-size:62px;font-weight:800;color:var(--cyan);line-height:1.2}.rateGem{font-size:72px;color:#3acaff;opacity:.4}
+.section{display:flex;justify-content:space-between;align-items:center;margin:32px 0 14px}.section h2{font-size:19px;margin:0}.calc{padding:22px;display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:end}.field{display:flex;flex-direction:column;gap:9px;font-size:13px;font-weight:700}.field input{width:100%;padding:15px;background:#081426;color:var(--text);border:1px solid #24466e;border-radius:13px;outline:none}.field input:focus{border-color:var(--cyan)}.out{background:#081426;border:1px solid #24466e;border-radius:13px;padding:14px 16px}.out strong{display:block;color:var(--cyan);font-size:25px;margin-top:6px}.swap{font-size:25px;color:var(--cyan);align-self:center}.btn{border:0;border-radius:14px;padding:15px 20px;font-weight:800;cursor:pointer;background:linear-gradient(100deg,#078be9,#10c5f3);color:white;box-shadow:0 8px 25px #009fe944}.btn:hover{filter:brightness(1.1)}.wide{grid-column:1/-1;width:100%}.hint{font-size:11px;line-height:1.6;color:#8299b8;margin:0}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.step{padding:18px;display:flex;gap:13px}.step b{font-size:23px;color:var(--cyan)}.step p{font-size:12px;line-height:1.6;margin-bottom:0}
+.pageTitle{margin:12px 0 24px}.pageTitle h1{font-size:34px}.form{max-width:620px;padding:24px;display:grid;gap:18px}.summary{padding:15px;background:#081426;border-radius:12px;display:flex;justify-content:space-between;gap:10px;align-items:center}.summary strong{font-size:22px;color:var(--cyan)}.back{background:none;border:0;color:var(--cyan);padding:0 0 15px;cursor:pointer}.note{background:#10243c;border:1px solid #23486e;padding:13px;border-radius:12px;font-size:12px;line-height:1.6;color:#a9bfd9}.orderList{display:grid;gap:12px}.order{padding:18px;display:grid;grid-template-columns:1fr auto;gap:10px}.order h3{margin:0 0 5px}.order p{font-size:12px;margin:4px 0}.tag{display:inline-block;border-radius:20px;padding:7px 10px;font-size:10px;font-weight:800;background:#5c461b66;color:var(--yellow)}.tag.checking{background:#16476a;color:#71d2ff}.tag.processing{background:#48316c;color:#d1b2ff}.tag.completed{background:#14553e;color:#5de6b2}.tag.cancelled{background:#632b3b;color:#ff9baa}.actions{grid-column:1/-1;border-top:1px solid #203c5d;padding-top:12px;display:flex;gap:8px;flex-wrap:wrap}.actions select,.actions button{background:#0a1b30;border:1px solid #31577f;color:var(--text);padding:9px;border-radius:9px}.actions button{cursor:pointer}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}.stat{padding:15px;background:#0e2038;border:1px solid var(--line);border-radius:13px}.stat strong{display:block;font-size:25px;color:var(--cyan)}.stat span{font-size:11px;color:var(--muted)}.error{font-size:12px;color:var(--red)}footer{border-top:1px solid #1a3452;padding:22px 0 28px;text-align:center;color:#7187a4;font-size:11px}
+@media(max-width:680px){.wrap{padding:0 14px}.top{height:auto;min-height:70px;flex-wrap:wrap;padding:12px 0;gap:10px}nav{width:100%;overflow:auto}.nav{white-space:nowrap;font-size:12px;padding:8px 10px}main{padding-top:22px}.heroGem{font-size:65px;padding:0}.rateNum{font-size:49px}.calc{grid-template-columns:1fr}.swap{display:none}.wide{grid-column:auto}.steps{grid-template-columns:1fr}.pageTitle h1{font-size:29px}.stats{grid-template-columns:repeat(2,1fr)}.order{grid-template-columns:1fr}.order>div:nth-child(2){text-align:left}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="brand"><span class="diamond">◇</span><span>TON<span class="cyan">Shop</span></span></div>
+  <nav>
+    <button class="nav active" data-page="home">Главная</button>
+    <button class="nav" data-page="orders">Мои заказы</button>
+    <button class="nav" data-page="admin">Админка</button>
+  </nav>
+</header>
+<main>
+<section id="home" class="view">
+  <div class="hero"><div><div class="eyebrow"><i class="dot"></i>ДЕМО-ВЕРСИЯ</div><h1>Покупка TON<br><span class="gradient">просто и удобно</span></h1><p class="muted">Современный интерфейс TONShop. Сейчас сайт работает в демонстрационном режиме — без реальных платежей и переводов.</p></div><div class="heroGem">💎</div></div>
+  <div class="rate"><div><div class="eyebrow">ТЕКУЩИЙ ДЕМО-КУРС</div><div class="rateNum">100 ₽</div><span class="muted">за 1 TON</span></div><div class="rateGem">◇</div></div>
+  <div class="section"><h2>Калькулятор</h2><span class="muted" style="font-size:12px">Тестовый расчёт</span></div>
+  <div class="card calc">
+    <label class="field">Сумма в рублях<input id="rub" type="number" min="100" max="50000" value="1000"></label><div class="swap">↔</div>
+    <div class="out"><span class="muted" style="font-size:12px">Количество TON</span><strong id="ton">10.00 TON</strong></div>
+    <button class="btn wide" id="buy">💎 Оформить демо-заказ →</button>
+    <p class="hint">Используйте только выдуманный тестовый адрес. Не переводите деньги.</p>
+  </div>
+  <div class="section"><h2>Как это работает</h2></div>
+  <div class="steps">
+    <article class="card step"><b>01</b><div><strong>Создайте заявку</strong><p class="muted">Укажите сумму и тестовый адрес кошелька.</p></div></article>
+    <article class="card step"><b>02</b><div><strong>Следите за статусом</strong><p class="muted">Заявка появится в разделе «Мои заказы».</p></div></article>
+    <article class="card step"><b>03</b><div><strong>Обработка администратором</strong><p class="muted">В демо-версии статус меняется вручную.</p></div></article>
+  </div>
+</section>
+<section id="checkout" class="view" hidden>
+  <button class="back" data-back="home">← На главную</button><div class="pageTitle"><div class="eyebrow">НОВАЯ ЗАЯВКА</div><h1>Оформление заказа</h1><p class="muted">Демо-форма. Никакие реальные платежи не принимаются.</p></div>
+  <div class="card form">
+    <label class="field">Сумма, ₽<input id="sum" type="number" min="100" max="50000" value="1000"></label>
+    <div class="summary"><span class="muted">Количество TON</span><strong id="sumTon">10.00 TON</strong></div>
+    <label class="field">Тестовый публичный адрес кошелька<input id="wallet" maxlength="120" placeholder="DEMO_WALLET_ADDRESS_123"></label>
+    <div class="note">Не вводите seed-фразу, приватный ключ или пароль кошелька. Используйте только выдуманный адрес для демонстрации.</div>
+    <button class="btn" id="create">Создать демо-заказ</button><div class="error" id="err"></div>
+  </div>
+</section>
+<section id="orders" class="view" hidden>
+  <div class="pageTitle"><div class="eyebrow">ЛИЧНЫЙ КАБИНЕТ</div><h1>Мои заказы</h1><p class="muted">Заявки сохраняются в этом браузере.</p></div><div id="myOrders" class="orderList"></div>
+</section>
+<section id="admin" class="view" hidden>
+  <div class="pageTitle"><div class="eyebrow">УПРАВЛЕНИЕ</div><h1>Демо-админка</h1><p class="muted">Локальная панель для проверки интерфейса. Не защищена серверной авторизацией и не предназначена для публичного управления.</p></div>
+  <div id="login" class="card form"><label class="field">Демо-пароль<input id="pass" type="password" placeholder="Введи demo"></label><button class="btn" id="loginBtn">Открыть панель</button><div class="error" id="loginErr"></div></div>
+  <div id="panel" hidden><div class="stats" id="stats"></div><div class="section"><h2>Все заявки</h2></div><div id="allOrders" class="orderList"></div></div>
+</section>
+</main>
+<footer>TONShop · Демонстрационный интерфейс · GitHub Pages</footer>
+</div>
+<script>
+const $=s=>document.querySelector(s), KEY="tonshop-gh-pages-orders-v1";
+const labels={pending:"Ожидает оплаты · демо",checking:"Проверка · демо",processing:"В обработке · демо",completed:"Выполнен · демо",cancelled:"Отменён · демо"};
+let admin=false;
+function get(){try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch{return []}}
+function put(a){localStorage.setItem(KEY,JSON.stringify(a))}
+function page(id){document.querySelectorAll(".view").forEach(x=>x.hidden=true);$("#"+id).hidden=false;document.querySelectorAll(".nav").forEach(x=>x.classList.toggle("active",x.dataset.page===id));if(id==="orders")myOrders();if(id==="admin"&&admin)adminView();scrollTo({top:0,behavior:"smooth"})}
+document.querySelectorAll("[data-page]").forEach(b=>b.onclick=()=>page(b.dataset.page));
+document.querySelectorAll("[data-back]").forEach(b=>b.onclick=()=>page(b.dataset.back));
+function calc(){let v=Math.max(0,Number($("#rub").value||0));$("#ton").textContent=(v/100).toFixed(2)+" TON";$("#sum").value=v||"";$("#sumTon").textContent=(v/100).toFixed(2)+" TON"}
+$("#rub").oninput=calc;$("#buy").onclick=()=>{calc();page("checkout")};
+$("#sum").oninput=()=>$("#sumTon").textContent=(Number($("#sum").value||0)/100).toFixed(2)+" TON";
+$("#create").onclick=()=>{let rub=Math.round(Number($("#sum").value)),wallet=$("#wallet").value.trim();$("#err").textContent="";
+ if(!Number.isFinite(rub)||rub<100||rub>50000){$("#err").textContent="Укажи сумму от 100 до 50 000 ₽.";return}
+ if(wallet.length<8||wallet.length>120){$("#err").textContent="Для демо введи выдуманный адрес длиной 8–120 символов.";return}
+ let a=get(),o={id:String(Date.now()).slice(-7),rub,ton:(rub/100).toFixed(2),wallet,status:"pending",created:new Date().toISOString()};
+ a.unshift(o);put(a);alert("Демо-заказ #"+o.id+" создан. Реальная оплата не подключена.");page("orders")};
+function tag(s){return `<span class="tag ${s}">${labels[s]}</span>`}
+function card(o,adminMode=false){return `<article class="card order"><div><h3>Заказ #${o.id}</h3><p class="muted">${new Date(o.created).toLocaleString("ru-RU")}</p><p>${o.ton} TON · ${Number(o.rub).toLocaleString("ru-RU")} ₽</p><p class="muted">Кошелёк: ${esc(o.wallet)}</p></div><div>${tag(o.status)}</div>${adminMode?`<div class="actions"><select data-status="${o.id}">${Object.entries(labels).map(([k,v])=>`<option value="${k}" ${o.status===k?"selected":""}>${v}</option>`).join("")}</select><button data-save="${o.id}">Сохранить статус</button></div>`:""}</article>`}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function myOrders(){let a=get();$("#myOrders").innerHTML=a.length?a.map(o=>card(o)).join(""):`<div class="card form" style="max-width:none">Заказов пока нет. Вернись на главную и создай демо-заявку.</div>`}
+$("#loginBtn").onclick=()=>{if($("#pass").value!=="demo"){$("#loginErr").textContent="Для демонстрации пароль: demo";return}admin=true;$("#login").hidden=true;$("#panel").hidden=false;adminView()};
+function adminView(){let a=get();$("#stats").innerHTML=[["Всего",a.length],["Новые",a.filter(x=>x.status==="pending").length],["Выполнено",a.filter(x=>x.status==="completed").length]].map(([k,v])=>`<div class="stat"><strong>${v}</strong><span>${k}</span></div>`).join("");$("#allOrders").innerHTML=a.length?a.map(o=>card(o,true)).join(""):`<div class="card form" style="max-width:none">Заявок пока нет.</div>`;document.querySelectorAll("[data-save]").forEach(b=>b.onclick=()=>{let all=get(),o=all.find(x=>x.id===b.dataset.save);o.status=$(`[data-status="${o.id}"]`).value;put(all);adminView()})}
+calc();
+</script>
+</body></html>

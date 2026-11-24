@@ -56,6 +56,28 @@ main{padding:36px 0 60px}.view.hidden{display:none}.hero{display:flex;justify-co
     <button class="btn" id="create">Создать демо-заказ</button><div class="error" id="err"></div>
   </div>
 </section>
+
+<section id="payment" class="view" hidden>
+  <button class="back" data-back="orders">← К моим заказам</button>
+  <div class="pageTitle"><div class="eyebrow">СЛЕДУЮЩИЙ ШАГ</div><h1>Оплата заказа</h1><p class="muted">Демонстрационный экран — реальные платежи отключены.</p></div>
+  <div class="card form">
+    <div class="summary"><span class="muted">Номер заказа</span><strong id="payId">—</strong></div>
+    <div class="summary"><span class="muted">К оплате</span><strong id="payRub">—</strong></div>
+    <div class="summary"><span class="muted">Количество TON</span><strong id="payTon">—</strong></div>
+    <div class="note">
+      <b>Реквизиты для оплаты</b><br><br>
+      Здесь в будущем будет защищённая платёжная ссылка или данные, предоставленные платёжным провайдером.<br><br>
+      <b>ДЕМО: реквизиты не подключены.</b> Не переводите деньги по данным из тестовой версии.
+    </div>
+    <div class="note">
+      <b>После оплаты</b><br>
+      В реальной версии платёж должен подтверждаться автоматически платёжным провайдером. Скриншот или нажатие кнопки сами по себе не подтверждают поступление денег.
+    </div>
+    <button class="btn" id="demoPaid">Я оплатил (только демо)</button>
+    <p class="hint">Кнопка создаёт только тестовую отметку «Проверка». Она не принимает и не проверяет деньги.</p>
+  </div>
+</section>
+
 <section id="orders" class="view" hidden>
   <div class="pageTitle"><div class="eyebrow">ЛИЧНЫЙ КАБИНЕТ</div><h1>Мои заказы</h1><p class="muted">Заявки сохраняются в этом браузере.</p></div><div id="myOrders" class="orderList"></div>
 </section>
@@ -83,11 +105,19 @@ $("#create").onclick=()=>{let rub=Math.round(Number($("#sum").value)),wallet=$("
  if(!Number.isFinite(rub)||rub<100||rub>50000){$("#err").textContent="Укажи сумму от 100 до 50 000 ₽.";return}
  if(wallet.length<8||wallet.length>120){$("#err").textContent="Для демо введи выдуманный адрес длиной 8–120 символов.";return}
  let a=get(),o={id:String(Date.now()).slice(-7),rub,ton:(rub/100).toFixed(2),wallet,status:"pending",created:new Date().toISOString()};
- a.unshift(o);put(a);alert("Демо-заказ #"+o.id+" создан. Реальная оплата не подключена.");page("orders")};
+ a.unshift(o);put(a);
+ $("#payId").textContent="#"+o.id;
+ $("#payRub").textContent=Number(o.rub).toLocaleString("ru-RU")+" ₽";
+ $("#payTon").textContent=o.ton+" TON";
+ page("payment")};
 function tag(s){return `<span class="tag ${s}">${labels[s]}</span>`}
 function card(o,adminMode=false){return `<article class="card order"><div><h3>Заказ #${o.id}</h3><p class="muted">${new Date(o.created).toLocaleString("ru-RU")}</p><p>${o.ton} TON · ${Number(o.rub).toLocaleString("ru-RU")} ₽</p><p class="muted">Кошелёк: ${esc(o.wallet)}</p></div><div>${tag(o.status)}</div>${adminMode?`<div class="actions"><select data-status="${o.id}">${Object.entries(labels).map(([k,v])=>`<option value="${k}" ${o.status===k?"selected":""}>${v}</option>`).join("")}</select><button data-save="${o.id}">Сохранить статус</button></div>`:""}</article>`}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function myOrders(){let a=get();$("#myOrders").innerHTML=a.length?a.map(o=>card(o)).join(""):`<div class="card form" style="max-width:none">Заказов пока нет. Вернись на главную и создай демо-заявку.</div>`}
+$("#demoPaid").onclick=()=>{
+ let a=get(),o=a[0];
+ if(o){o.status="checking";put(a);alert("Демо-статус изменён на «Проверка». Реальный платёж не совершался.");page("orders")}
+};
 $("#loginBtn").onclick=()=>{if($("#pass").value!=="demo"){$("#loginErr").textContent="Для демонстрации пароль: demo";return}admin=true;$("#login").hidden=true;$("#panel").hidden=false;adminView()};
 function adminView(){let a=get();$("#stats").innerHTML=[["Всего",a.length],["Новые",a.filter(x=>x.status==="pending").length],["Выполнено",a.filter(x=>x.status==="completed").length]].map(([k,v])=>`<div class="stat"><strong>${v}</strong><span>${k}</span></div>`).join("");$("#allOrders").innerHTML=a.length?a.map(o=>card(o,true)).join(""):`<div class="card form" style="max-width:none">Заявок пока нет.</div>`;document.querySelectorAll("[data-save]").forEach(b=>b.onclick=()=>{let all=get(),o=all.find(x=>x.id===b.dataset.save);o.status=$(`[data-status="${o.id}"]`).value;put(all);adminView()})}
 calc();
